@@ -1,3 +1,5 @@
 #pragma once
-#include"Matrix.h"
-#include"IImageIO.h"
+#include"Matrix.hpp"
+#include"IImageIO.hpp"
+#include"IImageIn.hpp"
+#include"IImageOut.hpp"

@@ -1,16 +1,19 @@
 #include<iostream>
-#include"BMPImageIO.h"
+#include"core.h"
+#include"BMPImageIO.hpp"
 using namespace std;
 using namespace openqr;
-bool test(IImageIO& imageIO)
+template<typename T>
+bool test(IImageIO<T>& imageIO)
 {
 	imageIO.ImageRead("123");
 	return true;
 }
 int main()
 {
-	BMPImageIO a;
-	test(a);
-	cout << a.data << endl;
+	Matrix<int> mat;
+	//BMPImageIO<int> a;
+	//test<int>(a);
+	// cout << a.data << endl;
 	return 0;
 }

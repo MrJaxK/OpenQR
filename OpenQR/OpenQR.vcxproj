@@ -112,18 +112,14 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
-    <ClCompile Include="BMPImageIO.cpp" />
-    <ClCompile Include="Matrix.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="BMPImageIO.h" />
+    <ClInclude Include="BMPImageIO.hpp" />
     <ClInclude Include="core.h" />
-    <ClInclude Include="IImageIn.h" />
-    <ClInclude Include="IImageIO.h" />
-    <ClInclude Include="IImageOut.h" />
-    <ClInclude Include="Matrix.h" />
+    <ClInclude Include="IImageIn.hpp" />
+    <ClInclude Include="IImageIO.hpp" />
+    <ClInclude Include="IImageOut.hpp" />
+    <ClInclude Include="Matrix.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

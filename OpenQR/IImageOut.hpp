@@ -1,13 +1,14 @@
 #pragma once
 #include<string>
-#include"Matrix.h"
+#include"Matrix.hpp"
 namespace openqr
 {
+	template<typename T>
 	class IImageOut
 	{
 	public:
 		IImageOut();
-		virtual bool ImageSave(const std::string& filePath)=0;
+		virtual bool ImageSave(const std::string& filePath,Matrix<T>& mat)=0;
 		~IImageOut();
 	};
 }

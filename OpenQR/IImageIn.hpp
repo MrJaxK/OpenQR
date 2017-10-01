@@ -1,14 +1,14 @@
 #pragma once
 #include<string>
-#include"Matrix.h"
+#include"Matrix.hpp"
 namespace openqr
 {
+	template<typename T>
 	class IImageIn
 	{
 	public:
 		IImageIn();
-		template<typename T>
-			virtual Matrix<T> ImageRead(const std::string& filePath) = 0;
+		virtual Matrix<T> ImageRead(const std::string& filePath) = 0;
 		~IImageIn();
 	};
 }
