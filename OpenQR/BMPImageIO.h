@@ -7,7 +7,8 @@ namespace openqr
 	{
 	public:
 		BMPImageIO();
-		virtual Matrix ImageRead(const std::string& filePath)override;
+		template<typename T>
+			virtual Matrix<T> ImageRead(const std::string& filePath)override;
 		virtual bool ImageSave(const std::string& filePath)override;
 		~BMPImageIO();
 	//private:

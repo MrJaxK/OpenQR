@@ -6,7 +6,7 @@ namespace openqr
 	{
 	}
 	template<typename T>
-	Matrix<T>::Matrix(int rows, int cols, MatrixType mType, int defaultVal):data(*mat)
+	Matrix<T>::Matrix(int rows, int cols, int defaultVal)
 	{
 		
 	}

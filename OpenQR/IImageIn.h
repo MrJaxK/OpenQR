@@ -7,7 +7,8 @@ namespace openqr
 	{
 	public:
 		IImageIn();
-		virtual Matrix ImageRead(const std::string& filePath) = 0;
+		template<typename T>
+			virtual Matrix<T> ImageRead(const std::string& filePath) = 0;
 		~IImageIn();
 	};
 }
