@@ -11,5 +11,13 @@ namespace openqr
 		virtual Matrix<T> ImageRead(const std::string& filePath) = 0;
 		~IImageIn();
 	};
+	template<typename T>
+	inline IImageIn<T>::IImageIn()
+	{
+	}
+	template<typename T>
+	inline IImageIn<T>::~IImageIn()
+	{
+	}
 }
 

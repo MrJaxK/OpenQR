@@ -11,9 +11,8 @@ bool test(IImageIO<T>& imageIO)
 }
 int main()
 {
-	Matrix<int> mat;
-	//BMPImageIO<int> a;
-	//test<int>(a);
-	// cout << a.data << endl;
+	BMPImageIO<int> a;
+	test<int>(a);
+	cout << a.data << endl;
 	return 0;
 }

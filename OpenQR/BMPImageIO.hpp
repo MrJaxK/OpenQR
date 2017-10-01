@@ -11,7 +11,7 @@ namespace openqr
 		BMPImageIO();
 
 		virtual Matrix<T> ImageRead(const std::string& filePath)override;
-		virtual bool ImageSave(const std::string& filePath)override;
+		virtual bool ImageSave(const std::string& filePath,Matrix<T>& mat)override;
 		~BMPImageIO();
 	//private:
 		int data;
@@ -29,7 +29,7 @@ namespace openqr
 		return Matrix<T>();
 	}
 	template<typename T>
-	bool openqr::BMPImageIO<T>::ImageSave(const std::string & filePath)
+	bool openqr::BMPImageIO<T>::ImageSave(const std::string & filePath,Matrix<T>& mat)
 	{
 		data = 3;
 		return false;

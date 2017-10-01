@@ -11,8 +11,16 @@ namespace openqr
 	public:
 		IImageIO();
 		
-		virtual Matrix<T> ImageRead(const std::string& filePath)= 0;
-		virtual bool ImageSave(const std::string& filePath) = 0;
+		virtual Matrix<T> ImageRead(const std::string& filePath)override= 0;
+		virtual bool ImageSave(const std::string& filePath,Matrix<T>& mat)override = 0;
 		~IImageIO();
 	};
+	template<typename T>
+	inline IImageIO<T>::IImageIO()
+	{
+	}
+	template<typename T>
+	inline IImageIO<T>::~IImageIO()
+	{
+	}
 }
