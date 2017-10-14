@@ -21,13 +21,13 @@ namespace openqr
 		friend std::ostream& operator<<(std::ostream& os,Matrix& mat)
 		{
 			os<<"[ ";
-			for(int i=0;i<mat.colNumber;++i)
+			for(int i=0;i<mat.rowNumber;++i)
 			{
 				if(i!=0)
 					os<<"  ";
-				for(int j=0;j<mat.rowNumber;++j)
-					os<<mat(j,i)<<" ";
-				if(i!=mat.colNumber-1)
+				for(int j=0;j<mat.colNumber;++j)
+					os<<mat(i,j)<<" ";
+				if(i!=mat.rowNumber-1)
 					os<<std::endl;
 			}
 			os<<"]"<<std::endl;
