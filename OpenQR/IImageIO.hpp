@@ -10,8 +10,9 @@ namespace openqr
 	{
 	public:
 		IImageIO();
-		
+		//Return a Matrix contains gray scale image
 		virtual Matrix<T> ImageRead(const std::string& filePath)override= 0;
+		//Unnecessary function, but need to overload
 		virtual bool ImageSave(const std::string& filePath,Matrix<T>& mat)override = 0;
 		~IImageIO();
 	};
