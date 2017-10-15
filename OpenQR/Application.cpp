@@ -6,9 +6,15 @@ using namespace std;
 using namespace openqr;
 int main()
 {
-	BMPImageIO<int> t;
+	/*BMPImageIO<int> t;
 	Matrix<int> temp =t.ImageRead("no.bmp");
-	cout << temp << endl;
+	cout << temp << endl;*/
+	string a;
+	cin >> a;
+	
+	std::string fileSuffix = a.substr(a.find_last_of(".") + 1);
+	transform(fileSuffix.begin(), fileSuffix.end(), fileSuffix.begin(), ::tolower);
+	cout << fileSuffix;
 	//BMP t("no.bmp");
 	//unsigned char R, G, B;
 	//unsigned char gray;

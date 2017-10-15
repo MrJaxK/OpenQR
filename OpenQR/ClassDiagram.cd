@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="NameAndType">
+  <Class Name="BMP">
+    <Position X="0.5" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAAAAAAgICAAAUAYIBEAAAAAACAAAAAQQAQIAAAAAA=</HashCode>
+      <FileName>bmp.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="openqr::BMPImageIO&lt;T&gt;">
+    <Position X="3.5" Y="5.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAABAAAAAAAQAAAAAAAAAgABAAIAAAAAAAIA=</HashCode>
+      <FileName>BMPImageIO.hpp</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="bmpData" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="openqr::IImageIn&lt;T&gt;">
+    <Position X="3.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAgAQAAAAAAAAAAAAAAAAAIAAAAAA=</HashCode>
+      <FileName>IImageIn.hpp</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="openqr::IImageIO&lt;T&gt;">
+    <Position X="3.5" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAQAAAAAAAAAAgAQAAAAAAAAAgAAAAAAAAAAAAAA=</HashCode>
+      <FileName>IImageIO.hpp</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="openqr::IImageOut&lt;T&gt;">
+    <Position X="6.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAgAABAAACAAAAAAA=</HashCode>
+      <FileName>IImageOut.hpp</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="openqr::Matrix&lt;T&gt;" Collapsed="true">
+    <Position X="9" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAwAAAAAAAAAAEAAQAAAAAAAoAAAAIAIwAAAAAAA=</HashCode>
+      <FileName>Matrix.hpp</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Microsoft YaHei UI" Size="9" />
+</ClassDiagram>

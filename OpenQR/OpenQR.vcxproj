@@ -121,8 +121,12 @@
     <ClInclude Include="IImageIn.hpp" />
     <ClInclude Include="IImageIO.hpp" />
     <ClInclude Include="IImageOut.hpp" />
+    <ClInclude Include="ImageIO.hpp" />
     <ClInclude Include="Matrix.hpp" />
     <ClInclude Include="SupFunction.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram.cd" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
