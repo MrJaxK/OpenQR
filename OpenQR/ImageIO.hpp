@@ -25,7 +25,8 @@ namespace openqr
 			BMP,
 			JPG,
 			GIF,
-			PNG
+			PNG,
+			UNKNOWN
 		};
 	private:
 		ImageType ImageTypeCheck(const std::string& filePath)
@@ -35,10 +36,12 @@ namespace openqr
 			ImageType fileType;
 			if (fileSuffix == "bmp")
 				fileType = ImageType::BMP;
+			else
+				fileType=ImageType::UNKNOWN;
 			return fileType;
 		}
 		template<typename T>
-		IImageIO<T>* ImageTypeSet(const ImageType& type);
+		IImageIO<T>* ImageTypeSet(ImageType& type);
 		
 	};
 	inline ImageIO::ImageIO()
@@ -52,7 +55,7 @@ namespace openqr
 	inline Matrix<T> ImageIO::ImageRead(const std::string & filePath)
 	{
 		ImageType type = ImageTypeCheck(filePath);
-		IImageIO<T>* imageProcesser=ImageTypeSet(type);
+		IImageIO<T>* imageProcesser=ImageTypeSet<T>(type);
 		Matrix<T> matImage = imageProcesser->ImageRead(filePath);
 		delete imageProcesser;
 		imageProcesser = nullptr;
@@ -65,11 +68,12 @@ namespace openqr
 	}
 
 	template<typename T>
-	inline IImageIO<T>* ImageIO::ImageTypeSet(const ImageType & type)
+	inline IImageIO<T>* ImageIO::ImageTypeSet(ImageType & type)
 	{
 		if (type == ImageType::BMP)
 			return new BMPImageIO<T>();
-
+		else
+			return nullptr;
 	}
 
 }
