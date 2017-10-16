@@ -62,7 +62,7 @@ public:
 
 public:
 	BYTE*	load(const std::string &location);
-	void	save(const std::string &location);
+	bool	save(const std::string &location);
 
 private:
 	void	swap(BYTE **src, DWORD width, DWORD height, WORD channel);

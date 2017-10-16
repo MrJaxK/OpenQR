@@ -82,19 +82,19 @@ BYTE* BMP::load(const std::string &location)
 	return pixels;
 }
 
-void BMP::save(const std::string &location)
+bool BMP::save(const std::string &location)
 {
 	std::ofstream file(location, std::ios::binary);
 	if (!file)
 	{
 		std::cout << "Failed to open or create bitmap file." << std::endl;
-		return;
+		return false;
 	}
 
 	if (head == NULL || info == NULL || pixels == NULL)
 	{
 		std::cout << "Failed to save bitmap file." << std::endl;
-		return;
+		return false;
 	}
 
 	file.write((char*)head, sizeof(BITMAPFILEHEADER));
@@ -106,6 +106,7 @@ void BMP::save(const std::string &location)
 	this->swap(&pixels, cols, rows, channels);
 	file.write((char*)pixels, this->rows * this->cols * this->channels);
 	this->swap(&pixels, cols, rows, channels);
+	return true;
 }
 
 void BMP::swap(BYTE **src, unsigned long width, unsigned long height, WORD channel)

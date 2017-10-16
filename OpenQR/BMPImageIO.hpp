@@ -10,8 +10,11 @@ namespace openqr
 	{
 	public:
 		BMPImageIO();
-		//return a Matrix contains converted to gray bitmap
+		///return a Matrix contains converted to gray bitmap
 		virtual Matrix<T> ImageRead(const std::string& filePath)override;
+		///Only save the same Image which read by ImageRead
+		///Will change bmpData to data in variable mat
+		//TODO: Add generic functions for bmp image saving
 		virtual bool ImageSave(const std::string& filePath,Matrix<T>& mat)override;
 		~BMPImageIO();
 	private:
@@ -34,8 +37,20 @@ namespace openqr
 	template<typename T>
 	bool openqr::BMPImageIO<T>::ImageSave(const std::string & filePath,Matrix<T>& mat)
 	{
-		bmpData.save(filePath);
-		return false;
+		if (bmpData.pixels == nullptr)
+			return false;
+		BYTE* ImgValue_s = bmpData.pixels;
+		int height = bmpData.rows;
+		int width = bmpData.cols;
+		for (int y = 0; y <height; y++) {
+			for (int x = 0; x < width; x++) {
+				BYTE gray = mat(y, x);
+				ImgValue_s[3 * (width*y + x) + 2] = gray;
+				ImgValue_s[3 * (width*y + x) + 1] = gray;
+				ImgValue_s[3 * (width*y + x) + 0] = gray;
+			}
+		}
+		return bmpData.save(filePath);
 	}
 
 	template<typename T>

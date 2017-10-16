@@ -64,7 +64,12 @@ namespace openqr
 	template<typename T>
 	inline bool ImageIO::ImageSave(const std::string & filePath, const Matrix<T>& mat)
 	{
-		return false;
+		ImageType type = ImageTypeCheck(filePath);
+		IImageIO<T>* imageProcesser = ImageTypeSet<T>(type);
+		bool saveFlag = imageProcesser->ImageSave(filePath, mat);
+		delete imageProcesser;
+		imageProcesser = null;
+		return saveFlag;
 	}
 
 	template<typename T>
