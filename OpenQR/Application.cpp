@@ -11,10 +11,17 @@ int main()
 	cout << temp << endl;*/
 	string a;
 	cin >> a;
-	
+
 	std::string fileSuffix = a.substr(a.find_last_of(".") + 1);
-	transform(fileSuffix.begin(), fileSuffix.end(), fileSuffix.begin(), ::tolower);
-	cout << fileSuffix;
+	if(fileSuffix!=a)
+	{
+		transform(fileSuffix.begin(), fileSuffix.end(), fileSuffix.begin(), ::tolower);
+		cout << fileSuffix;
+	}
+	else
+	{
+		cout<<"File name uncorrect"<<endl;
+	}
 	//BMP t("no.bmp");
 	//unsigned char R, G, B;
 	//unsigned char gray;
