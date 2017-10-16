@@ -2,8 +2,8 @@
 #pragma once
 
 #include <string>
-typedef long			LONG;
-typedef unsigned long	DWORD;
+typedef int				LONG;
+typedef int				DWORD;
 typedef int				BOOL;
 typedef unsigned char   BYTE;
 typedef unsigned short	WORD;
