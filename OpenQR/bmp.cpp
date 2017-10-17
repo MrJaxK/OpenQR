@@ -70,7 +70,7 @@ BYTE* BMP::load(const std::string &location)
 		file.read((char*)palette, 256 * sizeof(RGBQUAD));
 	}
 
-	unsigned long size = info->biWidth * info->biHeight * this->_channels();
+	LONG size = info->biWidth * info->biHeight * this->_channels();
 	pixels = new BYTE[size];
 
 	file.seekg(head->bfOffBits, std::ios::beg);
@@ -109,12 +109,12 @@ bool BMP::save(const std::string &location)
 	return true;
 }
 
-void BMP::swap(BYTE **src, unsigned long width, unsigned long height, WORD channel)
+void BMP::swap(BYTE **src, DWORD width, DWORD height, WORD channel)
 {
 	BYTE temp;
 	for (unsigned long w = 0; w < width * channel; w++)
 	{
-		for (unsigned long i = 0, j = height - 1; i <= j; i++, j--)
+		for (DWORD i = 0, j = height - 1; i <= j; i++, j--)
 		{
 			temp							= (*src)[i * width * channel + w];
 			(*src)[i * width * channel + w]	= (*src)[j * width * channel + w];
