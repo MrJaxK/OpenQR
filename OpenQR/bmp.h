@@ -78,11 +78,11 @@ public:
 	DWORD	rows;
 	DWORD	cols;
 	WORD	channels;
-private:
+public:                         //为了让BMPImageIO.hpp读取数据
 	BITMAPFILEHEADER	*head;  
 	BITMAPINFOHEADER	*info;  
 	RGBQUAD				*palette;  
 public:
-	BYTE				*pixels;//为了让BMPImageIO.hpp读取数据
+	BYTE				*pixels;
 
 }; /* end for class BMP */

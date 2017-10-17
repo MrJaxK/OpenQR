@@ -1,4 +1,5 @@
 #include<iostream>
+#include<vector>
 #include"core.h"
 #include"BMPImageIO.hpp"
 #include"bmp.h"
@@ -30,12 +31,15 @@ int main()
 //		}
 //	}
 //	t.save("another.bmp");
-
-	BMPImageIO<int> bmpIO;
-	Matrix<int> mat = bmpIO.ImageRead("no.bmp");
-	cout << mat << endl;
-	if (bmpIO.ImageSave("another.bmp", mat))
-		cout << "Done" << endl;
+	ImageIO imageIO;
+    Matrix<int> mat = imageIO.ImageRead<int>("1.bmp");
+    if (imageIO.ImageSave("another1.bmp", mat))
+        cout << "Done" << endl;
+//    BMPImageIO<int> bmpIO;
+//	Matrix<int> mat2 = bmpIO.ImageRead("no.bmp");
+	//cout << mat << endl;
+//	if (bmpIO.ImageSave("anotherBmpIO.bmp", mat2))
+//		cout << "Done" << endl;
 	else
 		cout << "Save fail" << endl;
 	return 0;
