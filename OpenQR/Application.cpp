@@ -11,7 +11,7 @@ int main()
 	cout << temp << endl;*/
 	//string a;
 	//cin >> a;
-
+	cout << sizeof(WORD) << endl;
 	//std::string fileSuffix = a.substr(a.find_last_of(".") + 1);
 	//if(fileSuffix!=a)
 	//{
@@ -43,12 +43,12 @@ int main()
 	//}
 	//t.save("another.bmp");
 
-	BMPImageIO<int> bmpIO;
+	/*BMPImageIO<int> bmpIO;
 	Matrix<int> mat = bmpIO.ImageRead("no.bmp");
-	//cout << mat << endl;
+	cout << mat << endl;
 	if (bmpIO.ImageSave("another.bmp", mat))
 		cout << "Done" << endl;
 	else
-		cout << "Save fail" << endl;
+		cout << "Save fail" << endl;*/
 	return 0;
 }
