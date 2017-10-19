@@ -77,7 +77,7 @@ BYTE* BMP::load(const std::string &location)
 	file.read((char*)pixels, size);
 
 
-	this->swap(&pixels, cols, rows, channels);
+	//this->swap(&pixels, cols, rows, channels);
 
 	return pixels;
 }
@@ -103,9 +103,9 @@ bool BMP::save(const std::string &location)
 	if (info->biBitCount < 24)
 		file.write((char*)palette, sizeof(RGBQUAD) * 256);
 
-	this->swap(&pixels, cols, rows, channels);
+	//this->swap(&pixels, cols, rows, channels);
 	file.write((char*)pixels, this->rows * this->cols * this->channels);
-	this->swap(&pixels, cols, rows, channels);
+	//othis->swap(&pixels, cols, rows, channels);
 	return true;
 }
 

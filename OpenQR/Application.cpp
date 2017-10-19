@@ -32,7 +32,7 @@ int main()
 //	}
 //	t.save("another.bmp");
 	ImageIO imageIO;
-    Matrix<int> mat = imageIO.ImageRead<int>("1.bmp");
+    Matrix<int> mat = imageIO.ImageRead<int>("no.bmp");
     if (imageIO.ImageSave("another1.bmp", mat))
         cout << "Done" << endl;
 //    BMPImageIO<int> bmpIO;

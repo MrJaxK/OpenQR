@@ -64,6 +64,7 @@ public:
 	bool	save(const std::string &location);
 
 private:
+	//TODO: define 'swap'
 	void	swap(BYTE **src, DWORD width, DWORD height, WORD channel);
 
 public:
