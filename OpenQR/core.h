@@ -4,3 +4,4 @@
 #include"IImageIn.hpp"
 #include"IImageOut.hpp"
 #include"ImageIO.hpp"
+#include"QRCode.h"

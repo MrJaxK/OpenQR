@@ -113,17 +113,21 @@
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="bmp.cpp" />
-    <ClCompile Include="Source.cpp" />
+    <ClCompile Include="QRCode.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bmp.h" />
     <ClInclude Include="BMPImageIO.hpp" />
     <ClInclude Include="core.h" />
+    <ClInclude Include="gf.hpp" />
     <ClInclude Include="IImageIn.hpp" />
     <ClInclude Include="IImageIO.hpp" />
     <ClInclude Include="IImageOut.hpp" />
     <ClInclude Include="ImageIO.hpp" />
     <ClInclude Include="Matrix.hpp" />
+    <ClInclude Include="poly.hpp" />
+    <ClInclude Include="QRCode.h" />
+    <ClInclude Include="rs.hpp" />
     <ClInclude Include="SupFunction.h" />
   </ItemGroup>
   <ItemGroup>

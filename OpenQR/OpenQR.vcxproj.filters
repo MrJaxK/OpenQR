@@ -1,60 +1,72 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" xmlns="htp://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Source Files">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
-    </Filter>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="Application.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="bmp.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Include\Headers</Filter>
     </ClCompile>
-    <ClCompile Include="Source.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Application.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="QRCode.cpp">
+      <Filter>Include\Headers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="core.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="IImageIn.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="IImageIO.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="IImageOut.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="BMPImageIO.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Matrix.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="bmp.h">
-      <Filter>Header Files</Filter>
+      <Filter>Include\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="core.h">
+      <Filter>Include\Headers</Filter>
     </ClInclude>
     <ClInclude Include="SupFunction.h">
-      <Filter>Header Files</Filter>
+      <Filter>Include\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="BMPImageIO.hpp">
+      <Filter>Include\Templates</Filter>
+    </ClInclude>
+    <ClInclude Include="gf.hpp">
+      <Filter>Include\Templates</Filter>
+    </ClInclude>
+    <ClInclude Include="IImageIn.hpp">
+      <Filter>Include\Templates</Filter>
+    </ClInclude>
+    <ClInclude Include="IImageIO.hpp">
+      <Filter>Include\Templates</Filter>
+    </ClInclude>
+    <ClInclude Include="IImageOut.hpp">
+      <Filter>Include\Templates</Filter>
     </ClInclude>
     <ClInclude Include="ImageIO.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Include\Templates</Filter>
+    </ClInclude>
+    <ClInclude Include="Matrix.hpp">
+      <Filter>Include\Templates</Filter>
+    </ClInclude>
+    <ClInclude Include="poly.hpp">
+      <Filter>Include\Templates</Filter>
+    </ClInclude>
+    <ClInclude Include="rs.hpp">
+      <Filter>Include\Templates</Filter>
+    </ClInclude>
+    <ClInclude Include="QRCode.h">
+      <Filter>Include\Headers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Include">
+      <UniqueIdentifier>{0ebf520f-cf6e-4d02-b664-d3183f00adb9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Include\Headers">
+      <UniqueIdentifier>{53ac2039-332a-466c-8c89-bd44996be2da}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Include\Templates">
+      <UniqueIdentifier>{395da366-db2d-4a08-a690-78cd06213c78}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source">
+      <UniqueIdentifier>{de09e3a5-0c44-44f8-90d1-896fa70f548e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
 </Project>

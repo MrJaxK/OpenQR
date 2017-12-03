@@ -38,28 +38,30 @@ int main()
 //	t.save("another.bmp");
 //endregion
     //    region ImageIO test
-//	ImageIO imageIO;
-//    Matrix<int> mat = imageIO.ImageRead<int>("no.bmp");
-//    if (imageIO.ImageSave("another1.bmp", mat))
-//        cout << "Done" << endl;
-//	else
-//		cout << "Save fail" << endl;
-//    Matrix<int> mat2(500,300,130);
-//    if (imageIO.ImageSave("pure.bmp", mat2))
-//        cout << "Done" << endl;
-//    else
-//        cout << "Save fail" << endl;
+	//ImageIO imageIO;
+ //   Matrix<int> mat = imageIO.ImageRead<int>("no.bmp");
+ //   if (imageIO.ImageSave("another1.bmp", mat))
+ //       cout << "Done" << endl;
+	//else
+	//	cout << "Save fail" << endl;
+ //   Matrix<int> mat2(500,300,130);
+ //   if (imageIO.ImageSave("pure.bmp", mat2))
+ //       cout << "Done" << endl;
+ //   else
+ //       cout << "Save fail" << endl;
 //        endregion
 
-   complex<double>a[5],b[5],c[5];
-    for(int i=0;i<5;++i)
-        a[i]=i+1;
-    FastFourierTransform(a,5,b,fourier_transform_direction::ftdSpectrumToFunction);
-    for(int i=0;i<5;++i)
-        cout<<b[i]<<endl;
-    cout<<endl;
-    FastFourierTransform(b,5,c,fourier_transform_direction::ftdFunctionToSpectrum);
-    for(int i=0;i<5;++i)
-        cout<<c[i]<<endl;
+   //complex<double>a[5],b[5],c[5];
+   // for(int i=0;i<5;++i)
+   //     a[i]=i+1;
+   // FastFourierTransform(a,5,b,fourier_transform_direction::ftdSpectrumToFunction);
+   // for(int i=0;i<5;++i)
+   //     cout<<b[i]<<endl;
+   // cout<<endl;
+   // FastFourierTransform(b,5,c,fourier_transform_direction::ftdFunctionToSpectrum);
+   // for(int i=0;i<5;++i)
+   //     cout<<c[i]<<endl;
+	QRCode qr;
+	cout << qr.BitConvertToGray() << endl;
 	return 0;
 }

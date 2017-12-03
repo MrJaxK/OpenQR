@@ -33,6 +33,8 @@ namespace openqr
 			os<<"]"<<std::endl;
 			return  os;
 		}
+
+		void Resize(int rows, int cols, T defaultVal = 0);
 		~Matrix();
 	private:
 		std::vector<std::vector<T> >data;
@@ -49,8 +51,7 @@ namespace openqr
 	template<typename T>
 	Matrix<T>::Matrix(int rows, int cols,T defaultVal)
 	{
-		data.resize(rows, std::vector<T>(cols, defaultVal));
-		setRowColNumber(rows,cols);
+		Resize(rows, cols, defaultVal);
 	}
 	template<typename T>
 	Matrix<T>::Matrix(const Matrix &rMat)
@@ -70,6 +71,12 @@ namespace openqr
 	{
 		rowNumber=row;
 		colNumber=col;
+	}
+	template<typename T>
+	inline void Matrix<T>::Resize(int rows, int cols, T defaultVal)
+	{
+		data.resize(rows, std::vector<T>(cols, defaultVal));
+		setRowColNumber(rows, cols);
 	}
 	template<typename T>
 	Matrix<T>::~Matrix()
