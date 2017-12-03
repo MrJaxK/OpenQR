@@ -1,12 +1,17 @@
 #include<iostream>
 #include<vector>
+#include <complex>
+#include <cmath>
 #include"core.h"
+#include "SupFunction.h"
 #include"BMPImageIO.hpp"
 #include"bmp.h"
 using namespace std;
 using namespace openqr;
+
 int main()
 {
+    //region  BMPImageIO test
 //	BMPImageIO<int> t;
 //	Matrix<int> temp =t.ImageRead("no.bmp");
 //	cout << temp << endl;
@@ -31,16 +36,30 @@ int main()
 //		}
 //	}
 //	t.save("another.bmp");
-	ImageIO imageIO;
-	Matrix<int> mat = imageIO.ImageRead<int>("1.bmp");
-    if (imageIO.ImageSave("another1.bmp", mat))
-        cout << "Done" << endl;
-//    BMPImageIO<int> bmpIO;
-//	Matrix<int> mat2 = bmpIO.ImageRead("no.bmp");
-	//cout << mat << endl;
-//	if (bmpIO.ImageSave("anotherBmpIO.bmp", mat2))
-//		cout << "Done" << endl;
-	else
-		cout << "Save fail" << endl;
+//endregion
+    //    region ImageIO test
+//	ImageIO imageIO;
+//    Matrix<int> mat = imageIO.ImageRead<int>("no.bmp");
+//    if (imageIO.ImageSave("another1.bmp", mat))
+//        cout << "Done" << endl;
+//	else
+//		cout << "Save fail" << endl;
+//    Matrix<int> mat2(500,300,130);
+//    if (imageIO.ImageSave("pure.bmp", mat2))
+//        cout << "Done" << endl;
+//    else
+//        cout << "Save fail" << endl;
+//        endregion
+
+   complex<double>a[5],b[5],c[5];
+    for(int i=0;i<5;++i)
+        a[i]=i+1;
+    FastFourierTransform(a,5,b,fourier_transform_direction::ftdSpectrumToFunction);
+    for(int i=0;i<5;++i)
+        cout<<b[i]<<endl;
+    cout<<endl;
+    FastFourierTransform(b,5,c,fourier_transform_direction::ftdFunctionToSpectrum);
+    for(int i=0;i<5;++i)
+        cout<<c[i]<<endl;
 	return 0;
 }

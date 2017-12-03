@@ -14,6 +14,6 @@ set(SOURCE_FILES
         bmp.h
         ImageIO.hpp
         SupFunction.h
-        Matrix.hpp)
+        Matrix.hpp FFTCore.h FFTCore.cpp)
 
 add_executable(OpenQR ${SOURCE_FILES})
