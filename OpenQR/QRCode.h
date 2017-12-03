@@ -1,5 +1,7 @@
 #pragma once
 #include"core.h"
+#include<string>
+#include<bitset>
 namespace openqr
 {
 	class QRCode
@@ -8,7 +10,6 @@ namespace openqr
 		QRCode();
 		~QRCode();
 		Matrix<int>BitConvertToGray();
-		
 	private:
 		Matrix<int>functionPatterns;
 		void GenerateFunctionPatterns();//Use 2-Q specification
@@ -26,5 +27,6 @@ namespace openqr
 		*Use gray 50 stand for reservation
 		*/
 		void ReserveVersionArea();
+
 	};
 }

@@ -6,6 +6,7 @@
 #include "SupFunction.h"
 #include"BMPImageIO.hpp"
 #include"bmp.h"
+#include"DataEncoder.h"
 using namespace std;
 using namespace openqr;
 
@@ -65,9 +66,18 @@ int main()
    // for(int i=0;i<5;++i)
    //     cout<<c[i]<<endl;
 
-	QRCode qr;
+	/*QRCode qr;
 	Matrix<int>mat(400, 400, 255);
 	ImageIO io;
-	io.ImageSave("func.bmp", qr.BitConvertToGray());
+	io.ImageSave("func.bmp", qr.BitConvertToGray());*/
+	DataEncoder da;
+	string a= da.Encode2_Q("Hello world");
+	for (int i = 1; i <= a.length(); ++i)
+	{
+		cout << a[i-1];
+		if (i % 8 == 0)
+			cout << " ";
+	}
+	//cout << a;
 	return 0;
 }

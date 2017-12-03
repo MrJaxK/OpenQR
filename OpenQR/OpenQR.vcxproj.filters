@@ -10,6 +10,7 @@
     <ClCompile Include="QRCode.cpp">
       <Filter>Include\Headers</Filter>
     </ClCompile>
+    <ClCompile Include="DataEncoder.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bmp.h">
@@ -51,6 +52,7 @@
     <ClInclude Include="QRCode.h">
       <Filter>Include\Headers</Filter>
     </ClInclude>
+    <ClInclude Include="DataEncoder.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram.cd" />
