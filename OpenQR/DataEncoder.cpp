@@ -6,11 +6,6 @@ DataEncoder::DataEncoder()
 {
 }
 
-DataEncoder::DataEncoder(const std::string & message)
-{
-	Encode2_Q(message);
-}
-
 
 DataEncoder::~DataEncoder()
 {

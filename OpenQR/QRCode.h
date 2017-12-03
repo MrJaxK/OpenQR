@@ -8,8 +8,10 @@ namespace openqr
 	{
 	public:
 		QRCode();
+		QRCode(const std::string& message);
 		~QRCode();
 		Matrix<int>BitConvertToGray();
+
 	private:
 		Matrix<int>functionPatterns;
 		void GenerateFunctionPatterns();//Use 2-Q specification

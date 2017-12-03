@@ -7,6 +7,10 @@ openqr::QRCode::QRCode()
 	GenerateFunctionPatterns();
 }
 
+openqr::QRCode::QRCode(const std::string & message)
+{
+}
+
 
 openqr::QRCode::~QRCode()
 {

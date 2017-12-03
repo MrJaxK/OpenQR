@@ -9,7 +9,6 @@ class DataEncoder
 {
 public:
 	DataEncoder();
-	DataEncoder(const std::string& message);
 	~DataEncoder();
 	std::string Encode2_Q(const std::string& message);
 private:

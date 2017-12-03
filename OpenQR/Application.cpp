@@ -4,56 +4,12 @@
 #include <cmath>
 #include"core.h"
 #include "SupFunction.h"
-#include"BMPImageIO.hpp"
-#include"bmp.h"
-#include"DataEncoder.h"
 using namespace std;
 using namespace openqr;
 
 int main()
 {
-    //region  BMPImageIO test
-//	BMPImageIO<int> t;
-//	Matrix<int> temp =t.ImageRead("no.bmp");
-//	cout << temp << endl;
-
-//	BMP t("no.bmp");
-//	unsigned char R, G, B;
-//	unsigned char gray;
-//	BYTE* ImgValue_s = t.pixels;
-//	cout << t.rows << " " << t.cols << endl;
-//	for (int y = 0; y < t.rows; y++) {
-//		for (int x = 0; x < t.cols; x++) {
-//
-//			R = ImgValue_s[3 * (t.cols*y + x) + 2];
-//			G = ImgValue_s[3 * (t.cols*y + x) + 1];
-//			B = ImgValue_s[3 * (t.cols *y + x) + 0];
-//
-//			//cout << (int)R << " " << (int)G << " " << (int)B << endl;
-//			gray = (R * 11 + G * 16 + B * 5) / 32; // define gray color
-//			ImgValue_s[3 * (t.cols*y + x) + 2] = gray;
-//			ImgValue_s[3 * (t.cols*y + x) + 1] = gray;
-//			ImgValue_s[3 * (t.cols*y + x) + 0] = gray;
-//		}
-//	}
-//	t.save("another.bmp");
-//endregion
-    //    region ImageIO test
-	//ImageIO imageIO;
- //   Matrix<int> mat = imageIO.ImageRead<int>("no.bmp");
-	//for (int x = 0; x < 1000; ++x)
-	//	for (int j = 0; j < 100; ++j)
-	//		mat(x, j) = 0;
- //   if (imageIO.ImageSave("another1.bmp", mat))
- //       cout << "Done" << endl;
-	//else
-	//	cout << "Save fail" << endl;
-    //Matrix<int> mat2(500,300,130);
-    //if (imageIO.ImageSave("pure.bmp", mat2))
-    //    cout << "Done" << endl;
-    //else
-    //    cout << "Save fail" << endl;
-//        endregion
+    
 
    //complex<double>a[5],b[5],c[5];
    // for(int i=0;i<5;++i)
@@ -66,18 +22,35 @@ int main()
    // for(int i=0;i<5;++i)
    //     cout<<c[i]<<endl;
 
-	/*QRCode qr;
-	Matrix<int>mat(400, 400, 255);
+	QRCode qr;
 	ImageIO io;
-	io.ImageSave("func.bmp", qr.BitConvertToGray());*/
+	io.ImageSave("func.bmp", qr.BitConvertToGray());
 	DataEncoder da;
-	string a= da.Encode2_Q("Hello world");
-	for (int i = 1; i <= a.length(); ++i)
+	string encodeWith2_QStandard = da.Encode2_Q("HEllo worLD");
+	const int MessageLength = 22;
+	char EncodeCoeff[22];
+	for (int i = 0; i < 22; ++i)
 	{
-		cout << a[i-1];
-		if (i % 8 == 0)
-			cout << " ";
+		string temp = encodeWith2_QStandard.substr(8 * i, 8);
+		bitset<8>tempBit(temp);
+		cout << temp << "  " << tempBit.to_ulong() << endl;
+		EncodeCoeff[i] = tempBit.to_ulong();
 	}
-	//cout << a;
+	const int EccLength = 22;
+	char* encoded = new char[EccLength + MessageLength];
+	RS::ReedSolomon<MessageLength, EccLength> rsencoder;
+	rsencoder.Encode(EncodeCoeff, encoded);
+
+	int standardEncoded[44];
+	for (int i = 0; i < 44; ++i)
+	{
+		standardEncoded[i] = (encoded[i] + 256) % 256;
+	}
+
+	for (int i = 0; i < 44; ++i)
+	{
+		cout << standardEncoded[i] << endl;
+	}
+	delete[] encoded;
 	return 0;
 }

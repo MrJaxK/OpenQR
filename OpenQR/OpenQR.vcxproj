@@ -114,6 +114,7 @@
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="bmp.cpp" />
     <ClCompile Include="DataEncoder.cpp" />
+    <ClCompile Include="Examples.cpp" />
     <ClCompile Include="QRCode.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -122,6 +123,7 @@
     <ClInclude Include="core.h" />
     <ClInclude Include="DataEncoder.h" />
     <ClInclude Include="gf.hpp" />
+    <ClInclude Include="Examples.h" />
     <ClInclude Include="IImageIn.hpp" />
     <ClInclude Include="IImageIO.hpp" />
     <ClInclude Include="IImageOut.hpp" />
