@@ -16,5 +16,15 @@ namespace openqr
 		void AddSeparators();
 		void AddAlignmentPatterns(int centerx,int centery);
 		void AddTimingPatterns();
+
+		/*
+		*Use gray 180 stand for reservation
+		*Use this function before Adding Timing Patterns
+		*/
+		void ReserveFormatArea();
+		/*
+		*Use gray 50 stand for reservation
+		*/
+		void ReserveVersionArea();
 	};
 }

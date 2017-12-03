@@ -38,13 +38,17 @@ openqr::Matrix<int> openqr::QRCode::BitConvertToGray()
 //Use 2-Q specification
 void openqr::QRCode::GenerateFunctionPatterns()
 {
-	functionPatterns.Resize(25, 25, 50);//Default 50 to test
+	functionPatterns.Resize(25, 25, 100);//Default 50 to test
 	AddFinderPatterns(0,24);
 	AddFinderPatterns(0,6);
 	AddFinderPatterns(25-7,24);
 	AddSeparators();
 	AddAlignmentPatterns(18,6);
+	ReserveFormatArea();
 	AddTimingPatterns();
+	//Add dark module
+	functionPatterns(8, 7) = 1;
+	ReserveVersionArea();
 }
 
 void openqr::QRCode::AddFinderPatterns(int x, int y)
@@ -103,4 +107,26 @@ void openqr::QRCode::AddTimingPatterns()
 		functionPatterns(6, 7 + i) = i % 2;
 	for (int i = 1; i <= 9; ++i)
 		functionPatterns(7 + i, 17) = i % 2;
+}
+//Use gray 180 stand for reservation
+void openqr::QRCode::ReserveFormatArea()
+{
+	for (int y = 0; y <= 6; ++y)
+		functionPatterns(8, y) = 180;
+	for (int x = 17; x < 25; ++x)
+		functionPatterns(x, 16) = 180;
+	for (int x = 0; x <= 8; ++x)
+		functionPatterns(x, 16) = 180;
+	for (int y = 17; y < 25; ++y)
+		functionPatterns(8, y)=180;
+}
+
+void openqr::QRCode::ReserveVersionArea()
+{
+	for (int x = 0; x < 6; ++x)
+		for (int y = 8; y <= 10; ++y)
+			functionPatterns(x, y) = 50;
+	for (int x = 14; x <= 16; ++x)
+		for (int y = 19; y < 25; ++y)
+			functionPatterns(x, y) = 50;
 }
