@@ -44,7 +44,7 @@ namespace openqr
 		int width = bmpSaveFile->info->biWidth;
 		for (int y = 0; y <height; y++) {
 			for (int x = 0; x < width; x++) {
-				BYTE gray = mat(y, x);
+				BYTE gray = mat(x,y);
 				ImgValue_s[3 * (width*y + x) + 2] = gray;
 				ImgValue_s[3 * (width*y + x) + 1] = gray;
 				ImgValue_s[3 * (width*y + x) + 0] = gray;
@@ -76,7 +76,7 @@ namespace openqr
 				B = ImgValue_s[3 * (width*y + x) + 0];
 				//cout << (int)R << " " << (int)G << " " << (int)B << endl;
 				gray = (R * 11 + G * 16 + B * 5) / 32; // define gray color
-				grayImg(y,x) = gray;
+				grayImg(x,y) = gray;
 			}
 		}
 		return grayImg;

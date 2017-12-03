@@ -13,5 +13,8 @@ namespace openqr
 		Matrix<int>functionPatterns;
 		void GenerateFunctionPatterns();//Use 2-Q specification
 		void AddFinderPatterns(int x,int y);
+		void AddSeparators();
+		void AddAlignmentPatterns(int centerx,int centery);
+		void AddTimingPatterns();
 	};
 }

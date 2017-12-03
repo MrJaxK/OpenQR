@@ -40,15 +40,18 @@ int main()
     //    region ImageIO test
 	//ImageIO imageIO;
  //   Matrix<int> mat = imageIO.ImageRead<int>("no.bmp");
+	//for (int x = 0; x < 1000; ++x)
+	//	for (int j = 0; j < 100; ++j)
+	//		mat(x, j) = 0;
  //   if (imageIO.ImageSave("another1.bmp", mat))
  //       cout << "Done" << endl;
 	//else
 	//	cout << "Save fail" << endl;
- //   Matrix<int> mat2(500,300,130);
- //   if (imageIO.ImageSave("pure.bmp", mat2))
- //       cout << "Done" << endl;
- //   else
- //       cout << "Save fail" << endl;
+    //Matrix<int> mat2(500,300,130);
+    //if (imageIO.ImageSave("pure.bmp", mat2))
+    //    cout << "Done" << endl;
+    //else
+    //    cout << "Save fail" << endl;
 //        endregion
 
    //complex<double>a[5],b[5],c[5];
@@ -61,7 +64,10 @@ int main()
    // FastFourierTransform(b,5,c,fourier_transform_direction::ftdFunctionToSpectrum);
    // for(int i=0;i<5;++i)
    //     cout<<c[i]<<endl;
+
 	QRCode qr;
-	cout << qr.BitConvertToGray() << endl;
+	Matrix<int>mat(400, 400, 255);
+	ImageIO io;
+	io.ImageSave("func.bmp", qr.BitConvertToGray());
 	return 0;
 }

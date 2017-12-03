@@ -14,7 +14,19 @@ namespace openqr
 		Matrix(int rows, int cols, T defaultVal=0);
 		Matrix(const Matrix&);
 		Matrix& operator=(const Matrix&);
-		inline T& operator()(int x,int y){return data[x][y]; }
+
+		//ATTENTION!!!!!
+		//y cord
+		//¡ü
+		//¡ü
+		//¡ü
+		//¡ü
+		//¡ü
+		//¡¤ ¡ú ¡ú ¡ú ¡ú ¡ú ¡ú ¡ú ¡ú ¡ú ¡ú ¡ú ¡ú  x cord 
+		//start from (0,0)
+		//range x¡Ê[0, this.getColNumber()]
+		//range y¡Ê[0, this.getRowNumber()];
+		inline T& operator()(int x,int y){return data[y][x]; }
 
 		inline int getRowNumber(){return rowNumber;}
 		inline int getColNumber(){return colNumber;}
