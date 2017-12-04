@@ -24,7 +24,8 @@ int main()
 
 	QRCode qr;
 	ImageIO io;
-	io.ImageSave("func.bmp", qr.BitConvertToGray());
+    Matrix<int>temp=qr.BitConvertToGray();
+	io.ImageSave("func.bmp", temp);
 	DataEncoder da;
 	string encodeWith2_QStandard = da.Encode2_Q("HEllo worLD");
 	const int MessageLength = 22;
