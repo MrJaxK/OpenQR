@@ -61,6 +61,10 @@ void DiscreteFourierFast(const std::complex<double>* f, int i_max, std::complex<
     int values_in_row = i_max / 2;
     int next_buf = 1;
 
+    /*
+     * Butterfly transfrom
+     * Base 2
+     */
     for (int step = 0; step < digitsCount; step++)
     {
         for (int n = 0; n < different_exps; n++)
@@ -129,10 +133,17 @@ void DiscreteFourierFast2D(const std::complex<double>* f, int i_max, int j_max, 
     delete [] phi_t;
 }
 
-void FastFourierTransform(const std::complex<double>* input, int inputNumber, std::complex<double>* output, fourier_transform_direction ftd)
+std::vector<std::complex<double>> FastFourierTransform(const std::complex<double>* input, int inputNumber, fourier_transform_direction ftd)
 {
+    std::vector<std::complex<double>> outputVec;
+
     if(!(inputNumber & (inputNumber - 1)) != 0)
+    {
+        std::complex<double>* output;
+        output=new std::complex<double>[inputNumber];
         DiscreteFourierFast(input,inputNumber,output,ftd);
+        outputVec.assign(output,output+inputNumber);
+    }
     else
     {
         int iMax=log2(inputNumber)+1;
@@ -144,10 +155,18 @@ void FastFourierTransform(const std::complex<double>* input, int inputNumber, st
         for(int i=inputNumber;i<iMax;++i)
             inputWithPow2[i]=0;
         DiscreteFourierFast(inputWithPow2,iMax,outputWithPow2,ftd);
-        for(int i=0;i<inputNumber;++i)
-            output[i]=outputWithPow2[i];
+        outputVec.assign(outputWithPow2,outputWithPow2+iMax);
         delete[] inputWithPow2;
         delete[] outputWithPow2;
     }
+    return outputVec;
+}
+//TODO: Finish fast convolution,
+//TODO: remember the result's degree is lPoly's Degree + rPoly's degree
+std::vector<std::complex<double>>
+FastConvolution(const std::vector<std::complex<double>> &lPoly, const std::vector<std::complex<double>> &rPoly) {
+//    std::vector<std::complex<double>> fftL,fftR;
+//    fftL=FastFourierTransform(&lPoly[0],lPoly.size(),ftdFunctionToSpectrum);
+//    fftR=FastFourierTransform(&rPoly[0],rPoly.size(),ftdFunctionToSpectrum);
 
 }

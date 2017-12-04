@@ -1,3 +1,6 @@
+/*
+ * Encode original data to fit QRCode version 2, EC level Q
+ */
 #pragma once
 #include<string>
 #include<bitset>

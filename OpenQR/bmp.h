@@ -78,7 +78,7 @@ public:
 	DWORD	rows;
 	DWORD	cols;
 	WORD	channels;
-public:                         //为了让BMPImageIO.hpp读取数据
+public:                         //In order to enable BMPImageIO.hpp to read data
 	BITMAPFILEHEADER	*head;  
 	BITMAPINFOHEADER	*info;  
 	RGBQUAD				*palette;  
