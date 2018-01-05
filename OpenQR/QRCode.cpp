@@ -64,7 +64,7 @@ void openqr::QRCode::GenerateDataMaskTest()
 }
 void openqr::QRCode::GenerateQRCodeTest()
 {
-	GenerateQRCode("Hello world!");
+	GenerateQRCode("www.baidu.com");
 	std::string LvQ_formatInfoString[8] = { "011010101011111","011000001101000",
 		"011111100110001","011101000000110","010010010110100","010000110000011",
 		"010111011011010","010101111101101" };
@@ -83,25 +83,25 @@ void openqr::QRCode::GenerateQRCodeTest()
 		}
 
 		int pos = 0;
-		for (int x = 24; x >=17 ; --x)
-			maskedData[i](x, 16) = LvQ_formatInfoString[i][pos++] - '0';
-		for (int y = 6; y >= 0; --y)
+		
+		for (int y = 0; y <=6 ; ++y)
 		{
 			maskedData[i](8, y) = LvQ_formatInfoString[i][pos++]-'0';
 		}
-
+		for (int x = 17; x <25; ++x)
+			maskedData[i](x, 16) = LvQ_formatInfoString[i][pos++] - '0';
 		pos = 0;
-		for (int y = 24; y >=17 ; --y)
-		{
-			if (y != 18)
-				maskedData[i](8, y) = LvQ_formatInfoString[i][pos++] - '0';
-		}
-		for (int x = 8; x >=0; --x)
+		
+		for (int x = 0; x <=8; ++x)
 		{
 			if (x != 6)
 				maskedData[i](x, 16) = LvQ_formatInfoString[i][pos++]-'0';
 		}
-
+		for (int y = 17; y <25; ++y)
+		{
+			if (y != 18)
+				maskedData[i](8, y) = LvQ_formatInfoString[i][pos++] - '0';
+		}
 		ImageIO io;
 		std::string fileName = std::to_string(i);
 		fileName = "data"+fileName+".bmp";
@@ -202,7 +202,7 @@ std::string openqr::QRCode::GenerateFinalBits(const std::string & message)
 	DataEncoder dataEncoder;
 	std::string encodeWith2_QStandard = dataEncoder.Encode2_Q(message);
 	const int MessageLength = 22;
-	char EncodeCoeff[22];
+	uint8_t EncodeCoeff[22];
 	for (int i = 0; i < 22; ++i)
 	{
 		std::string temp = encodeWith2_QStandard.substr(8 * i, 8);
@@ -211,7 +211,7 @@ std::string openqr::QRCode::GenerateFinalBits(const std::string & message)
 		EncodeCoeff[i] = tempBit.to_ulong();
 	}
 	const int EccLength = 22;
-	char* encoded = new char[EccLength + MessageLength];
+	uint8_t* encoded = new uint8_t[EccLength + MessageLength];
 	RS::ReedSolomon<MessageLength, EccLength> rsencoder;
 	rsencoder.Encode(EncodeCoeff, encoded);
 
@@ -219,7 +219,7 @@ std::string openqr::QRCode::GenerateFinalBits(const std::string & message)
 	std::string finalBits;
 	for (int i = 0; i < 44; ++i)
 	{
-		standardEncoded[i] = (encoded[i] + 256) % 256;
+		standardEncoded[i] = encoded[i];
 		std::bitset<8>tempBit(standardEncoded[i]);
 		finalBits += tempBit.to_string();
 	}

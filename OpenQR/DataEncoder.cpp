@@ -13,6 +13,8 @@ DataEncoder::~DataEncoder()
 
 std::string DataEncoder::Encode2_Q(const std::string & message)
 {
+	if (message.size() > 29)
+		throw("SIZE_OUT_OF_RANGE");
 	const int bitLength = 22 * 8;
 	std::string anModeCode = AlphanumericModeEncoding(message);
 	std::string appendModeIndi = "0010000001011"+anModeCode;

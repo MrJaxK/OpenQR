@@ -25,38 +25,39 @@ int main()
 	//ImageIO io;
 	//io.ImageSave("func.bmp", qr.BitConvertToGray());
 
-	DataEncoder da;
-	string encodeWith2_QStandard = da.Encode2_Q("HEllo worLD");
-	const int MessageLength = 22;
-	char EncodeCoeff[22];
-	for (int i = 0; i < 22; ++i)
-	{
-		string temp = encodeWith2_QStandard.substr(8 * i, 8);
-		bitset<8>tempBit(temp);
-		cout << temp << "  " << tempBit.to_ulong() << endl;
-		EncodeCoeff[i] = tempBit.to_ulong();
-	}
-	const int EccLength = 22;
-	char* encoded = new char[EccLength + MessageLength];
-	RS::ReedSolomon<MessageLength, EccLength> rsencoder;
-	rsencoder.Encode(EncodeCoeff, encoded);
+	//DataEncoder da;
+	//string encodeWith2_QStandard = da.Encode2_Q("openqr");
+	//const int MessageLength = 22;
+	//uint8_t EncodeCoeff[22];
+	//for (int i = 0; i < 22; ++i)
+	//{
+	//	string temp = encodeWith2_QStandard.substr(8 * i, 8);
+	//	bitset<8>tempBit(temp);
+	//	//cout << temp << "  " << tempBit.to_ulong() << endl;
+	//	cout << tempBit.to_ulong() << ",";
+	//	EncodeCoeff[i] = tempBit.to_ulong();
+	//}
+	//cout << endl;
+	//const int EccLength = 22;
+	////char* encoded = new char[EccLength + MessageLength];
+	//uint8_t* encoded = new uint8_t[EccLength + MessageLength];
+	//RS::ReedSolomon<MessageLength, EccLength> rsencoder;
+	//rsencoder.Encode(EncodeCoeff, encoded);
+	//int standardEncoded[44];
+	//for (int i = 0; i < 44; ++i)
+	//{
+	//	standardEncoded[i] = encoded[i];//(encoded[i] + 256) % 256;
+	//}
+	//for (int i = 22; i < 44; ++i)
+	//{
+	//	cout << standardEncoded[i] << "  ";
+	//}
+	//delete[] encoded;
 
-	int standardEncoded[44];
-	for (int i = 0; i < 44; ++i)
-	{
-		standardEncoded[i] = (encoded[i] + 256) % 256;
-	}
-
-	for (int i = 0; i < 44; ++i)
-	{
-		cout << standardEncoded[i] << endl;
-	}
-	delete[] encoded;
-
-	//QRCode qr;
-	////qr.GenerateQRCode("OpEnQR");
-	//ImageIO io;
-	//io.ImageSave("ModulePlaced.bmp", qr.BitConvertToGray());
-	//qr.GenerateQRCodeTest();
+	QRCode qr;
+	//qr.GenerateQRCode("OpEnQR");
+	ImageIO io;
+	io.ImageSave("ModulePlaced.bmp", qr.BitConvertToGray());
+	qr.GenerateQRCodeTest();
 	return 0;
 }
