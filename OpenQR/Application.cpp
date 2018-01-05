@@ -9,7 +9,6 @@ using namespace openqr;
 
 int main()
 {
-    
 
    //complex<double>a[5],b[5],c[5];
    // for(int i=0;i<5;++i)
@@ -22,9 +21,10 @@ int main()
    // for(int i=0;i<5;++i)
    //     cout<<c[i]<<endl;
 
-	QRCode qr;
-	ImageIO io;
-	io.ImageSave("func.bmp", qr.BitConvertToGray());
+	//QRCode qr;
+	//ImageIO io;
+	//io.ImageSave("func.bmp", qr.BitConvertToGray());
+
 	DataEncoder da;
 	string encodeWith2_QStandard = da.Encode2_Q("HEllo worLD");
 	const int MessageLength = 22;
@@ -52,5 +52,11 @@ int main()
 		cout << standardEncoded[i] << endl;
 	}
 	delete[] encoded;
+
+	//QRCode qr;
+	////qr.GenerateQRCode("OpEnQR");
+	//ImageIO io;
+	//io.ImageSave("ModulePlaced.bmp", qr.BitConvertToGray());
+	//qr.GenerateQRCodeTest();
 	return 0;
 }
