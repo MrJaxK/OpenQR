@@ -58,6 +58,7 @@ int main()
 	//qr.GenerateQRCode("OpEnQR");
 	ImageIO io;
 	io.ImageSave("ModulePlaced.bmp", qr.BitConvertToGray());
-	qr.GenerateQRCodeTest();
+	qr.GenerateQRCode("OPENQR MRK HELLOWORLD");
+	io.ImageSave("bestMasked.bmp", qr.BitConvertToGray());
 	return 0;
 }

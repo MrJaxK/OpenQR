@@ -1,4 +1,5 @@
 #pragma once
+#include<cmath>
 #include"core.h"
 #include"DataEncoder.h"
 #include"SupFunction.h"
@@ -48,9 +49,11 @@ namespace openqr
 		*/
 		void GenerateDataAreaMask();
 		void PlaceMessage(const std::string& message);
-		void MaskingEvalute();
 		void AddFormatInformation();
 		void AddFormatInformation(int bestMaskID);
+	private:
+		void MaskingEvalute();
+		int EvaluteMaskQuality(Matrix<int> masked);
 		Matrix<int> DataMasking(int maskNumber);
 	};
 }

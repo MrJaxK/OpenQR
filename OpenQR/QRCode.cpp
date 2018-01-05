@@ -49,6 +49,60 @@ bool openqr::QRCode::GenerateQRCode(const std::string & message)
 {
 	MatrixDataInitlize();
 	PlaceMessage(message);
+	std::string LvQ_formatInfoString[8] = { "011010101011111","011000001101000",
+		"011111100110001","011101000000110","010010010110100","010000110000011",
+		"010111011011010","010101111101101" };
+	std::vector<Matrix<int>> maskedData(8);
+	int evaluteCount[8] = { 0 };
+	int bestMaskNumber = 0;
+	int minCount = 9999999;
+	//Data masking
+	for (int i = 0; i < 8; ++i)
+	{
+		
+		maskedData[i].Resize(25, 25, 0);
+		Matrix<int> dataMaskingPatterns = DataMasking(i);
+		for (int x = 0; x < 25; ++x)
+		{
+			for (int y = 0; y < 25; ++y)
+			{
+				maskedData[i](x, y) = functionPatterns(x, y) ^ dataMaskingPatterns(x, y);
+			}
+		}
+
+		int pos = 0;
+
+		for (int y = 0; y <= 6; ++y)
+		{
+			maskedData[i](8, y) = LvQ_formatInfoString[i][pos++] - '0';
+		}
+		for (int x = 17; x <25; ++x)
+			maskedData[i](x, 16) = LvQ_formatInfoString[i][pos++] - '0';
+		pos = 0;
+
+		for (int x = 0; x <= 8; ++x)
+		{
+			if (x != 6)
+				maskedData[i](x, 16) = LvQ_formatInfoString[i][pos++] - '0';
+		}
+		for (int y = 17; y <25; ++y)
+		{
+			if (y != 18)
+				maskedData[i](8, y) = LvQ_formatInfoString[i][pos++] - '0';
+		}
+		
+		//Evalute all 8 penalties and confirm best MaskID
+		evaluteCount[i] = EvaluteMaskQuality(maskedData[i]);
+
+		if (evaluteCount[i] < minCount)
+		{
+			minCount = evaluteCount[i];
+			bestMaskNumber = i;
+		}
+
+	}
+	maskMode = bestMaskNumber;
+	functionPatterns = maskedData[bestMaskNumber];
 	return true;
 }
 void openqr::QRCode::GenerateDataMaskTest()
@@ -64,12 +118,16 @@ void openqr::QRCode::GenerateDataMaskTest()
 }
 void openqr::QRCode::GenerateQRCodeTest()
 {
-	GenerateQRCode("https://github.com/MrDxxK");
+	std::string message = "MrK";
+	MatrixDataInitlize();
+	PlaceMessage(message);
 	std::string LvQ_formatInfoString[8] = { "011010101011111","011000001101000",
 		"011111100110001","011101000000110","010010010110100","010000110000011",
 		"010111011011010","010101111101101" };
 	std::vector<Matrix<int>> maskedData(8);
+	int evaluteCount[8] = { 0 };
 	int bestMaskNumber = 0;
+	int minCount = 9999999;
 	for (int i = 0; i < 8; ++i)
 	{
 		maskedData[i].Resize(25, 25, 0);
@@ -106,11 +164,20 @@ void openqr::QRCode::GenerateQRCodeTest()
 		std::string fileName = std::to_string(i);
 		fileName = "data"+fileName+".bmp";
 		io.ImageSave(fileName, BitConvertToGray(maskedData[i]));
-
+		//io.ImageSave("mask"+std::to_string(i)+".bmp", BitConvertToGray(dataMaskingPatterns));
 		//Evalute all 8 penalties and confirm best MaskID
-		//maskMode=bestMaskNumber;
-		//functionPattrens=maskedData[bestMaskNumber];
+		evaluteCount[i] = EvaluteMaskQuality(maskedData[i]);
+		
+		if (evaluteCount[i] < minCount)
+		{
+			minCount = evaluteCount[i];
+			bestMaskNumber = i;
+		}
+		
 	}
+	maskMode=bestMaskNumber;
+	std::cout << "Mask Mode is: "<<maskMode << std::endl;
+	functionPatterns=maskedData[bestMaskNumber];
 }
 void openqr::QRCode::MatrixDataInitlize()
 {
@@ -322,32 +389,7 @@ void openqr::QRCode::PlaceMessage(const std::string & message)
 	}
 }
 
-void openqr::QRCode::MaskingEvalute()
-{
-	std::vector<Matrix<int>> maskedData(8);
-	int bestMaskNumber = 0;
-	for (int i = 0; i < 8; ++i)
-	{
-		maskedData[i].Resize(25, 25, 0);
-		Matrix<int> dataMaskingPatterns = DataMasking(i);
-		for (int x = 0; x < 25; ++x)
-		{
-			for (int y = 0; y < 25; ++y)
-			{
-				maskedData[i](x, y) = functionPatterns(x, y) ^ dataMaskingPatterns(x, y);
-			}
-		}
-		//ImageIO io;
-		//std::string fileName = std::to_string(i);
-		//fileName += "data.bmp";
-		//io.ImageSave(fileName, BitConvertToGray(maskedData[i]));
-		
-		//Evalute all 8 penalties and confirm best MaskID
-		//maskMode=bestMaskNumber;
-		//functionPattrens=maskedData[bestMaskNumber];
-	}
 
-}
 void openqr::QRCode::AddFormatInformation()
 {
 	AddFormatInformation(maskMode);
@@ -377,7 +419,166 @@ void openqr::QRCode::AddFormatInformation(int bestMaskID)
 			functionPatterns(8, y) = LvQ_formatInfoString[bestMaskID][pos++];
 	}
 }
+void openqr::QRCode::MaskingEvalute()
+{
+	std::vector<Matrix<int>> maskedData(8);
+	int bestMaskNumber = 0;
+	for (int i = 0; i < 8; ++i)
+	{
+		maskedData[i].Resize(25, 25, 0);
+		Matrix<int> dataMaskingPatterns = DataMasking(i);
+		for (int x = 0; x < 25; ++x)
+		{
+			for (int y = 0; y < 25; ++y)
+			{
+				maskedData[i](x, y) = functionPatterns(x, y) ^ dataMaskingPatterns(x, y);
+			}
+		}
+		//ImageIO io;
+		//std::string fileName = std::to_string(i);
+		//fileName += "data.bmp";
+		//io.ImageSave(fileName, BitConvertToGray(maskedData[i]));
 
+		//Evalute all 8 penalties and confirm best MaskID
+		//maskMode=bestMaskNumber;
+		//functionPattrens=maskedData[bestMaskNumber];
+	}
+
+}
+int openqr::QRCode::EvaluteMaskQuality(Matrix<int> masked)
+{
+	int total = 0;
+
+	//Penalty Rule 1
+	int penalty1 = 0;
+	//Check rows
+	for (int y = 0; y < 25; ++y)
+	{
+		int first = 0, last = 0;
+		for (int x = 1; x < 25; ++x)
+		{
+			if (masked(x, y) == masked(x - 1, y))
+				last = x;
+			else
+			{
+				if (last - first >= 4)
+					penalty1 += last - first - 1;
+				else
+				{
+					first = x;
+					last = x;
+				}
+			}
+		}
+		//x==24. Boundary conditions
+		if (last - first >= 4)
+			penalty1 += last - first - 1;
+	}
+	//Check column
+	for (int x = 0; x < 25; ++x)
+	{
+		int first = 0, last = 0;
+		for (int y = 1; y < 25; ++y)
+		{
+			if (masked(x, y) == masked(x , y - 1))
+				last = y;
+			else
+			{
+				if (last - first >= 4)
+					penalty1 += last - first - 1;
+				else
+				{
+					first = y;
+					last = y;
+				}
+			}
+		}
+		//y==24
+		if (last - first >= 4)
+			penalty1 += last - first - 1;
+	}
+
+	//Penalty Rule 2
+	int penalty2 = 0;
+	for (int x = 0; x < 24; ++x)
+	{
+		for (int y = 0; y < 24; ++y)
+		{
+			if (masked(x, y) == masked(x, y + 1) &&
+				masked(x + 1, y) == masked(x, y) &&
+				masked(x, y) == masked(x + 1, y + 1))
+				penalty2 += 3;
+		}
+	}
+
+	//Penalty Rule 3
+	int penalty3 = 0;
+	const int rulePattern[2][11] = { {1,0,1,1,1,0,1,0,0,0,0},{0,0,0,0,1,0,1,1,1,0,1} };
+	//Check row
+	for (int y = 0; y < 25; ++y)
+	{
+		for (int x = 0; x <= 14; ++x)
+		{
+
+			for (int index = 0; index < 2; ++index)
+			{
+				bool flag = true;
+				for (int i = 0; i < 11; ++i)
+				{
+					if (masked(x + i, y) != rulePattern[index][i])
+					{
+						flag = false;
+						break;
+					}
+				}
+				if (flag)
+					penalty3 += 40;
+			}
+
+		}
+	}
+	//Check column
+	for (int x = 0; x < 25; ++x)
+	{
+		for (int y = 0; y <= 14; ++y)
+		{
+
+			for (int index = 0; index < 2; ++index)
+			{
+				bool flag = true;
+				for (int i = 0; i < 11; ++i)
+				{
+					if (masked(x , y + i) != rulePattern[index][i])
+					{
+						flag = false;
+						break;
+					}
+				}
+				if (flag)
+					penalty3 += 40;
+			}
+
+		}
+	}
+
+	//Penalty Rule 4
+	int penalty4 = 0;
+	const int totalMods = 25 * 25;
+	int darkMods = 0;
+	for (int x = 0; x < 25; ++x)
+		for (int y = 0; y < 25; ++y)
+			darkMods += masked(x, y);
+	double darkRatio = 100 * darkMods / totalMods;//   darkRatio%
+	int darkRatioInt = static_cast<int>(darkRatio);
+	int d5 = darkRatioInt / 5;
+	int prev = d5 * 5; int next = d5 * 5 + 5;
+	prev = abs(prev - 50) / 5;
+	next = abs(next - 50) / 5;
+	penalty4 = (prev > next ? next : prev) * 10;
+	
+	total = penalty1 + penalty2 + penalty3 + penalty4;
+	return total;
+}
 openqr::Matrix<int> openqr::QRCode::DataMasking(int maskNumber)
 {
 	int row = 24;
@@ -449,9 +650,9 @@ openqr::Matrix<int> openqr::QRCode::DataMasking(int maskNumber)
 		for (int x = 0; x < 25; ++x)
 			for (int y = 0; y < 25; ++y)
 			{
-				int col = x;
+				int column = x;
 				int row = 24 - y;
-				if (((row*col) % 2) + ((row*col) % 3)%2 == 0)
+				if ((((row * column) % 2) + ((row * column) % 3))% 2 == 0)
 					mask(x, y) = 1;
 			}
 		break;
@@ -459,9 +660,9 @@ openqr::Matrix<int> openqr::QRCode::DataMasking(int maskNumber)
 		for (int x = 0; x < 25; ++x)
 			for (int y = 0; y < 25; ++y)
 			{
-				int col = x;
+				int column = x;
 				int row = 24 - y;
-				if (((row+col) % 2) + ((row*col) % 3)%2 == 0)
+				if ((((row + column) % 2) + ((row * column) % 3)) % 2 == 0)
 					mask(x, y) = 1;
 			}
 		break;
