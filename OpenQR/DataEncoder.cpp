@@ -17,7 +17,8 @@ std::string DataEncoder::Encode2_Q(const std::string & message)
 		throw("SIZE_OUT_OF_RANGE");
 	const int bitLength = 22 * 8;
 	std::string anModeCode = AlphanumericModeEncoding(message);
-	std::string appendModeIndi = "0010000001011"+anModeCode;
+	std::bitset<9> characterCount(message.size());
+	std::string appendModeIndi = "0010"+characterCount.to_string()+anModeCode;
 	//Add a Terminator of 0s if Necessary
 	int deltaLength = bitLength - appendModeIndi.length();
 	if (deltaLength <= 4)

@@ -64,7 +64,7 @@ void openqr::QRCode::GenerateDataMaskTest()
 }
 void openqr::QRCode::GenerateQRCodeTest()
 {
-	GenerateQRCode("www.baidu.com");
+	GenerateQRCode("https://github.com/MrDxxK");
 	std::string LvQ_formatInfoString[8] = { "011010101011111","011000001101000",
 		"011111100110001","011101000000110","010010010110100","010000110000011",
 		"010111011011010","010101111101101" };
