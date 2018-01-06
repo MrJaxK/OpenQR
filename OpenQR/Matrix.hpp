@@ -84,10 +84,11 @@ namespace openqr
 		rowNumber=row;
 		colNumber=col;
 	}
+	//Set all value in this matrix to defaltval
 	template<typename T>
 	inline void Matrix<T>::Resize(int rows, int cols, T defaultVal)
 	{
-		data.resize(rows, std::vector<T>(cols, defaultVal));
+		data=std::vector<std::vector<T>>(rows, std::vector<T>(cols, defaultVal));
 		setRowColNumber(rows, cols);
 	}
 	template<typename T>

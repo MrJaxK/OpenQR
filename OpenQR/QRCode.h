@@ -13,14 +13,13 @@ namespace openqr
 		QRCode();
 		QRCode(const std::string& message);
 		~QRCode();
-		Matrix<int>BitConvertToGray();
-		Matrix<int> openqr::QRCode::BitConvertToGray(Matrix<int> mat);
+		Matrix<int>	BitConvertToGray();
+		Matrix<int>	BitConvertToGray(Matrix<int> mat);
 		bool GenerateQRCode(const std::string& message);
-
-	public:
+	//Test functions
+	private:
 		void GenerateDataMaskTest();
 		void GenerateQRCodeTest();
-		//void MaskingEvalute();
 	private:
 		Matrix<int>functionPatterns;
 		Matrix<int>dataAreaMask;
