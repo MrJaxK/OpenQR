@@ -73,9 +73,7 @@ bool openqr::QRCode::GenerateQRCode(const std::string & message)
 		int pos = 0;
 
 		for (int y = 0; y <= 6; ++y)
-		{
 			maskedData[i](8, y) = LvQ_formatInfoString[i][pos++] - '0';
-		}
 		for (int x = 17; x <25; ++x)
 			maskedData[i](x, 16) = LvQ_formatInfoString[i][pos++] - '0';
 		pos = 0;
@@ -104,6 +102,14 @@ bool openqr::QRCode::GenerateQRCode(const std::string & message)
 	maskMode = bestMaskNumber;
 	functionPatterns = maskedData[bestMaskNumber];
 	return true;
+}
+std::string openqr::QRCode::DecodeQRCode(Matrix<int> mat)
+{
+	if (mat.getColNumber() != 400 || mat.getRowNumber() != 400)
+		throw("Matrix size unfit");
+	BinaryzationBigMat(mat);
+	Demasking();
+	return DecodeCore();
 }
 void openqr::QRCode::GenerateDataMaskTest()
 {
@@ -178,6 +184,155 @@ void openqr::QRCode::GenerateQRCodeTest()
 	maskMode=bestMaskNumber;
 	std::cout << "Mask Mode is: "<<maskMode << std::endl;
 	functionPatterns=maskedData[bestMaskNumber];
+}
+std::string openqr::QRCode::DecodeQRCodeTest(Matrix<int> mat)
+{
+	
+	//binaryzation
+	MatrixDataInitlize();
+	functionPatterns.Resize(25, 25);
+	maskMode = -1;
+	const int threshold = 16 * 16 * 255 / 2;
+	for (int x = 0; x < 400; x += 16)
+	{
+		for (int y = 0; y < 400; y += 16)
+		{
+			int totalGray = 0;
+			for(int i=0;i<16;++i)
+				for (int j = 0; j < 16; ++j)
+				{
+					totalGray += mat(x + i, y + j);
+				}
+			if (totalGray > threshold)
+			{
+				functionPatterns(x / 16, y / 16) = 0;
+			}
+			else
+			{
+				functionPatterns(x / 16, y / 16) = 1;
+			}
+		}
+	}
+	//Find mask mode
+	//Asuming both of the mask mode codeword is correct
+	std::string LvQ_formatInfoString[8] = { "011010101011111","011000001101000",
+		"011111100110001","011101000000110","010010010110100","010000110000011",
+		"010111011011010","010101111101101" };
+	std::string maskCodeword;
+	for (int y = 0; y <= 6; ++y)
+		maskCodeword+=functionPatterns(8, y)+'0';
+	for (int x = 17; x <25; ++x)
+		maskCodeword+=functionPatterns(x, 16)+'0';
+	for(int i=0;i<8;++i)
+		if (maskCodeword == LvQ_formatInfoString[i])
+		{
+			maskMode = i;
+			break;
+		}
+	//Demasking
+	Matrix<int> mask = DataMasking(maskMode);
+	for (int x = 0; x < 25; ++x)
+	{
+		for (int y = 0; y < 25; ++y)
+		{
+			functionPatterns(x, y) ^= mask(x, y);
+		}
+	}
+	//Read message+Ecc
+	std::string finalBits;
+	for (int x = 24; x >= 7; x -= 2)
+	{
+		if (x % 4 == 0)//upwards
+		{
+			for (int y = 0; y < 25; ++y)
+			{
+				if (dataAreaMask(x, y) == 1)
+					finalBits+=functionPatterns(x, y) + '0';
+				if (dataAreaMask(x - 1, y) == 1)
+					finalBits+=functionPatterns(x - 1, y)+ '0';
+			}
+		}
+		else//downwards
+		{
+			for (int y = 24; y >= 0; --y)
+			{
+				if (dataAreaMask(x, y) == 1)
+					finalBits+=functionPatterns(x, y) + '0';
+				if (dataAreaMask(x - 1, y) == 1)
+					finalBits+=functionPatterns(x - 1, y) + '0';
+			}
+		}
+	}
+	//After the Vertical Timing Pattern
+	for (int x = 5; x >= 0; x -= 2)
+	{
+		if (x % 4 == 1)//upwards
+		{
+			for (int y = 0; y < 25; ++y)
+			{
+				if (dataAreaMask(x, y) == 1)
+					finalBits+=functionPatterns(x, y) + '0';
+				if (dataAreaMask(x - 1, y) == 1)
+					finalBits+=functionPatterns(x - 1, y) + '0';
+			}
+		}
+		else//downwards
+		{
+			for (int y = 24; y >= 0; --y)
+			{
+				if (dataAreaMask(x, y) == 1)
+					finalBits+=functionPatterns(x, y) + '0';
+				if (dataAreaMask(x - 1, y) == 1)
+					finalBits += functionPatterns(x - 1, y) + '0';
+			}
+		}
+	}
+	//Correcting the message
+	const int MessageLength = 22;
+	const int EccLength = 22;
+	uint8_t encoded[44];
+	for (int i = 0; i < 44; ++i)
+	{
+		std::string temp = finalBits.substr(8 * i, 8);
+		std::bitset<8>tempBit(temp);
+		encoded[i] = tempBit.to_ulong();
+	}
+	RS::ReedSolomon<MessageLength, EccLength> rsDecoder;
+	uint8_t repaired[22];
+	rsDecoder.Decode(encoded, repaired);
+	std::string repairedMessage;
+	for (int i = 0; i < 22; ++i)
+	{
+		std::bitset<8>tempBit(repaired[i]);
+		repairedMessage += tempBit.to_string();
+	}
+	//Decode Alphanumeric Mode codeword
+	if (repairedMessage.substr(0, 4) != "0010")
+		throw("Not supported encoded mode.\nOnly support Alphanumeric Mode");
+	std::bitset<9> characterCount(repairedMessage.substr(4, 9));
+	int messageSize = characterCount.to_ulong();
+	std::string finalMessage;
+	//Starts form repairedMessage[13]
+	DataDecoder decoder;
+	int i = 0;
+	for (; i < messageSize - 1; i+=2)
+	{
+		//All the letters are combined two by two. Each of the combination cost 11 bits
+		std::bitset<11>tempBits(repairedMessage.substr(13 + 11 * (i / 2), 11));
+		int temp = tempBits.to_ulong();
+		finalMessage += decoder.ReverseMap(temp / 45) + decoder.ReverseMap(temp % 45);
+	}
+	//One letter in the end, 6 bits
+	//last one letter	
+	if (i == messageSize - 1)
+	{
+		std::bitset<6>tempBits(repairedMessage.substr(13 + 11 * (i / 2), 6));
+		int temp = tempBits.to_ulong();
+		finalMessage += decoder.ReverseMap(temp);
+	}
+	
+	std::cout << finalMessage;
+	return finalMessage;
 }
 void openqr::QRCode::MatrixDataInitlize()
 {
@@ -673,4 +828,258 @@ openqr::Matrix<int> openqr::QRCode::DataMasking(int maskNumber)
 			mask(i, j) = mask(i, j)&dataAreaMask(i, j);
 		}
 	return mask;
+}
+
+inline std::string openqr::QRCode::DecodeCore()
+{
+	//Read message+Ecc
+	std::string finalBits;
+	for (int x = 24; x >= 7; x -= 2)
+	{
+		if (x % 4 == 0)//upwards
+		{
+			for (int y = 0; y < 25; ++y)
+			{
+				if (dataAreaMask(x, y) == 1)
+					finalBits += functionPatterns(x, y) + '0';
+				if (dataAreaMask(x - 1, y) == 1)
+					finalBits += functionPatterns(x - 1, y) + '0';
+			}
+		}
+		else//downwards
+		{
+			for (int y = 24; y >= 0; --y)
+			{
+				if (dataAreaMask(x, y) == 1)
+					finalBits += functionPatterns(x, y) + '0';
+				if (dataAreaMask(x - 1, y) == 1)
+					finalBits += functionPatterns(x - 1, y) + '0';
+			}
+		}
+	}
+	//After the Vertical Timing Pattern
+	for (int x = 5; x >= 0; x -= 2)
+	{
+		if (x % 4 == 1)//upwards
+		{
+			for (int y = 0; y < 25; ++y)
+			{
+				if (dataAreaMask(x, y) == 1)
+					finalBits += functionPatterns(x, y) + '0';
+				if (dataAreaMask(x - 1, y) == 1)
+					finalBits += functionPatterns(x - 1, y) + '0';
+			}
+		}
+		else//downwards
+		{
+			for (int y = 24; y >= 0; --y)
+			{
+				if (dataAreaMask(x, y) == 1)
+					finalBits += functionPatterns(x, y) + '0';
+				if (dataAreaMask(x - 1, y) == 1)
+					finalBits += functionPatterns(x - 1, y) + '0';
+			}
+		}
+	}
+	//Correcting the message
+	const int MessageLength = 22;
+	const int EccLength = 22;
+	uint8_t encoded[44];
+	for (int i = 0; i < 44; ++i)
+	{
+		std::string temp = finalBits.substr(8 * i, 8);
+		std::bitset<8>tempBit(temp);
+		encoded[i] = tempBit.to_ulong();
+	}
+	RS::ReedSolomon<MessageLength, EccLength> rsDecoder;
+	uint8_t repaired[22];
+	rsDecoder.Decode(encoded, repaired);
+	std::string repairedMessage;
+	for (int i = 0; i < 22; ++i)
+	{
+		std::bitset<8>tempBit(repaired[i]);
+		repairedMessage += tempBit.to_string();
+	}
+	//Decode Alphanumeric Mode codeword
+	if (repairedMessage.substr(0, 4) != "0010")
+		throw("Not supported encoded mode.\nOnly support Alphanumeric Mode");
+	std::bitset<9> characterCount(repairedMessage.substr(4, 9));
+	int messageSize = characterCount.to_ulong();
+	std::string finalMessage;
+	//Starts form repairedMessage[13]
+	DataDecoder decoder;
+	int i = 0;
+	for (; i < messageSize - 1; i += 2)
+	{
+		//All the letters are combined two by two. Each of the combination cost 11 bits
+		std::bitset<11>tempBits(repairedMessage.substr(13 + 11 * (i / 2), 11));
+		int temp = tempBits.to_ulong();
+		finalMessage += decoder.ReverseMap(temp / 45) + decoder.ReverseMap(temp % 45);
+	}
+	//One letter in the end, 6 bits
+	//last one letter	
+	if (i == messageSize - 1)
+	{
+		std::bitset<6>tempBits(repairedMessage.substr(13 + 11 * (i / 2), 6));
+		int temp = tempBits.to_ulong();
+		finalMessage += decoder.ReverseMap(temp);
+	}
+	return finalMessage;
+}
+
+//std::string openqr::QRCode::DecodeCore(Matrix<int> mat)
+//{
+//	if (mat.getRowNumber() != 25 || mat.getColNumber() != 25)
+//		throw("Mat size unfit");
+//	//Read message+Ecc
+//	std::string finalBits;
+//	for (int x = 24; x >= 7; x -= 2)
+//	{
+//		if (x % 4 == 0)//upwards
+//		{
+//			for (int y = 0; y < 25; ++y)
+//			{
+//				if (dataAreaMask(x, y) == 1)
+//					finalBits += mat(x, y) + '0';
+//				if (dataAreaMask(x - 1, y) == 1)
+//					finalBits += mat(x - 1, y) + '0';
+//			}
+//		}
+//		else//downwards
+//		{
+//			for (int y = 24; y >= 0; --y)
+//			{
+//				if (dataAreaMask(x, y) == 1)
+//					finalBits += mat(x, y) + '0';
+//				if (dataAreaMask(x - 1, y) == 1)
+//					finalBits += mat(x - 1, y) + '0';
+//			}
+//		}
+//	}
+//	//After the Vertical Timing Pattern
+//	for (int x = 5; x >= 0; x -= 2)
+//	{
+//		if (x % 4 == 1)//upwards
+//		{
+//			for (int y = 0; y < 25; ++y)
+//			{
+//				if (dataAreaMask(x, y) == 1)
+//					finalBits += mat(x, y) + '0';
+//				if (dataAreaMask(x - 1, y) == 1)
+//					finalBits += mat(x - 1, y) + '0';
+//			}
+//		}
+//		else//downwards
+//		{
+//			for (int y = 24; y >= 0; --y)
+//			{
+//				if (dataAreaMask(x, y) == 1)
+//					finalBits += mat(x, y) + '0';
+//				if (dataAreaMask(x - 1, y) == 1)
+//					finalBits += mat(x - 1, y) + '0';
+//			}
+//		}
+//	}
+//	//Correcting the message
+//	const int MessageLength = 22;
+//	const int EccLength = 22;
+//	uint8_t encoded[44];
+//	for (int i = 0; i < 44; ++i)
+//	{
+//		std::string temp = finalBits.substr(8 * i, 8);
+//		std::bitset<8>tempBit(temp);
+//		encoded[i] = tempBit.to_ulong();
+//	}
+//	RS::ReedSolomon<MessageLength, EccLength> rsDecoder;
+//	uint8_t repaired[22];
+//	rsDecoder.Decode(encoded, repaired);
+//	std::string repairedMessage;
+//	for (int i = 0; i < 22; ++i)
+//	{
+//		std::bitset<8>tempBit(repaired[i]);
+//		repairedMessage += tempBit.to_string();
+//	}
+//	//Decode Alphanumeric Mode codeword
+//	if (repairedMessage.substr(0, 4) != "0010")
+//		throw("Not supported encoded mode.\nOnly support Alphanumeric Mode");
+//	std::bitset<9> characterCount(repairedMessage.substr(4, 9));
+//	int messageSize = characterCount.to_ulong();
+//	std::string finalMessage;
+//	//Starts form repairedMessage[13]
+//	DataDecoder decoder;
+//	int i = 0;
+//	for (; i < messageSize - 1; i += 2)
+//	{
+//		//All the letters are combined two by two. Each of the combination cost 11 bits
+//		std::bitset<11>tempBits(repairedMessage.substr(13 + 11 * (i / 2), 11));
+//		int temp = tempBits.to_ulong();
+//		finalMessage += decoder.ReverseMap(temp / 45) + decoder.ReverseMap(temp % 45);
+//	}
+//	//One letter in the end, 6 bits
+//	//last one letter	
+//	if (i == messageSize - 1)
+//	{
+//		std::bitset<6>tempBits(repairedMessage.substr(13 + 11 * (i / 2), 6));
+//		int temp = tempBits.to_ulong();
+//		finalMessage += decoder.ReverseMap(temp);
+//	}
+//}
+
+void openqr::QRCode::BinaryzationBigMat(Matrix<int> mat)
+{
+	//binaryzation
+	MatrixDataInitlize();
+	functionPatterns.Resize(25, 25);
+	maskMode = -1;
+	const int threshold = 16 * 16 * 255 / 2;
+	for (int x = 0; x < 400; x += 16)
+	{
+		for (int y = 0; y < 400; y += 16)
+		{
+			int totalGray = 0;
+			for (int i = 0; i<16; ++i)
+				for (int j = 0; j < 16; ++j)
+				{
+					totalGray += mat(x + i, y + j);
+				}
+			if (totalGray > threshold)
+			{
+				functionPatterns(x / 16, y / 16) = 0;
+			}
+			else
+			{
+				functionPatterns(x / 16, y / 16) = 1;
+			}
+		}
+	}
+}
+
+void openqr::QRCode::Demasking()
+{
+	//Find mask mode
+	//Asuming both of the mask mode codeword is correct
+	std::string LvQ_formatInfoString[8] = { "011010101011111","011000001101000",
+		"011111100110001","011101000000110","010010010110100","010000110000011",
+		"010111011011010","010101111101101" };
+	std::string maskCodeword;
+	for (int y = 0; y <= 6; ++y)
+		maskCodeword += functionPatterns(8, y) + '0';
+	for (int x = 17; x <25; ++x)
+		maskCodeword += functionPatterns(x, 16) + '0';
+	for (int i = 0; i<8; ++i)
+		if (maskCodeword == LvQ_formatInfoString[i])
+		{
+			maskMode = i;
+			break;
+		}
+
+	//Demasking
+	Matrix<int> mask = DataMasking(maskMode);
+	for (int x = 0; x < 25; ++x)
+	{
+		for (int y = 0; y < 25; ++y)
+		{
+			functionPatterns(x, y) ^= mask(x, y);
+		}
+	}
 }

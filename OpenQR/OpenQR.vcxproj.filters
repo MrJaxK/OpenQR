@@ -16,6 +16,9 @@
     <ClCompile Include="Examples.cpp">
       <Filter>Include\Defines</Filter>
     </ClCompile>
+    <ClCompile Include="DataDecoder.cpp">
+      <Filter>Include\Defines</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bmp.h">
@@ -61,6 +64,9 @@
       <Filter>Include\Headers</Filter>
     </ClInclude>
     <ClInclude Include="Examples.h">
+      <Filter>Include\Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="DataDecoder.h">
       <Filter>Include\Headers</Filter>
     </ClInclude>
   </ItemGroup>
