@@ -17,7 +17,7 @@ namespace openqr
 		template<typename T>
 		Matrix<T> ImageRead(const std::string& filePath);
 		template<typename T>
-		bool ImageSave(const std::string& filePath, Matrix<T>& mat);
+		bool ImageSave(const std::string& filePath, Matrix<T> mat);
 		~ImageIO();
 	private:
 		enum ImageType
@@ -62,7 +62,7 @@ namespace openqr
 		return matImage;
 	}
 	template<typename T>
-	inline bool ImageIO::ImageSave(const std::string & filePath,Matrix<T>& mat)
+	inline bool ImageIO::ImageSave(const std::string & filePath,Matrix<T> mat)
 	{
 		ImageType type = ImageTypeCheck(filePath);
 		IImageIO<T>* imageProcesser = ImageTypeSet<T>(type);

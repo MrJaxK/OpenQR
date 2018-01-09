@@ -7,6 +7,7 @@ set(CMAKE_CXX_STANDARD 11)
 set(rw_module_source_list
         Application.cpp
         BMPImageIO.hpp
+        DataDecoder.cpp DataDecoder.h
         core.h
         IImageIn.hpp
         IImageIO.hpp
