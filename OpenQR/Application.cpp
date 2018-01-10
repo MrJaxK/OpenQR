@@ -12,9 +12,10 @@ int main()
 
 	QRCode qrGen;
 	ImageIO io;
-	qrGen.GenerateQRCode("https://u.wechat.com/MB8byi5Qwsw61hlPVZI3YQI");
-	io.ImageSave("scanQR.bmp", qrGen.BitConvertToGray());
-	/*
+	qrGen.GenerateQRCode("sdlyyxy");
+//
+    io.ImageSave("scanQR.bmp",qrGen.BitConvertToGray());
+//	io.ImageSave("scanQR.bmp", qrGen.BitConvertToGray());
 	Matrix<int> qrPic = io.ImageRead<int>("scanQR.bmp");
 	QRCode qrScan;
 	for(int i=0;i<16;++i)
@@ -26,10 +27,10 @@ int main()
 			qrPic(14 * 16 + i, 13 * 16 + j) = ~qrPic(14 * 16 + i, 13 * 16 + j);
 		}
 	io.ImageSave("scanQRchanged.bmp", qrPic);
-	cout<<qrScan.DecodeQRCode(qrPic);*/
-	/*ImageIO io;
-	Matrix<int> changedQRPic = io.ImageRead<int>("scanQR.bmp");
-	QRCode qrScan;
-	cout << qrScan.DecodeQRCode(changedQRPic);*/
+	cout<<qrScan.DecodeQRCode(qrPic);
+//	ImageIO io;
+//	Matrix<int> changedQRPic = io.ImageRead<int>("scanQR.bmp");
+//	QRCode qrScan;
+//	cout << qrScan.DecodeQRCode(changedQRPic);
 	return 0;
 }
