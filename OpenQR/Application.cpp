@@ -10,10 +10,10 @@ using namespace openqr;
 int main()
 {
 
-	//QRCode qrGen;
-	//ImageIO io;
-	//qrGen.GenerateQRCode("WJH ZZH");
-	//io.ImageSave("scanQR.bmp", qrGen.BitConvertToGray());
+	QRCode qrGen;
+	ImageIO io;
+	qrGen.GenerateQRCode("https://u.wechat.com/MB8byi5Qwsw61hlPVZI3YQI");
+	io.ImageSave("scanQR.bmp", qrGen.BitConvertToGray());
 	/*
 	Matrix<int> qrPic = io.ImageRead<int>("scanQR.bmp");
 	QRCode qrScan;
@@ -27,9 +27,9 @@ int main()
 		}
 	io.ImageSave("scanQRchanged.bmp", qrPic);
 	cout<<qrScan.DecodeQRCode(qrPic);*/
-	ImageIO io;
+	/*ImageIO io;
 	Matrix<int> changedQRPic = io.ImageRead<int>("scanQR.bmp");
 	QRCode qrScan;
-	cout << qrScan.DecodeQRCode(changedQRPic);
+	cout << qrScan.DecodeQRCode(changedQRPic);*/
 	return 0;
 }
